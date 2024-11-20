@@ -16,4 +16,9 @@ public class StudentServiceImp implements StudentService {
     public Student save(Student student) {
         return studentRepo.save(student);
     }
+
+    @Override
+    public Student getByName(String name) {
+        return studentRepo.findByName(name);
+    }
 }
