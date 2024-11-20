@@ -17,6 +17,11 @@ public class StudentController {
         return studentService.save(student);
     }
 
+    @GetMapping("/{name}")
+    public Student getByName(@PathVariable String name) {
+        return studentService.getByName(name);
+    }
+
     @GetMapping("/hello")
     public String greet() {
         return "Hello World!!! from student controller, for testing!";

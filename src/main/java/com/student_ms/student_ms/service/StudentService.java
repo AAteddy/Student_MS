@@ -5,4 +5,6 @@ import com.student_ms.student_ms.model.Student;
 public interface StudentService {
 
     Student save(Student student);
+
+    Student getByName(String name);
 }
