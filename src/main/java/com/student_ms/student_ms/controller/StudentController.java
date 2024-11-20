@@ -19,6 +19,6 @@ public class StudentController {
 
     @GetMapping("/hello")
     public String greet() {
-        return "Hello World!!! from student controller!";
+        return "Hello World!!! from student controller, for testing!";
     }
 }
