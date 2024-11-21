@@ -1,6 +1,6 @@
-package com.student_ms.student_ms.service;
+package com.school.student_ms.service;
 
-import com.student_ms.student_ms.model.Student;
+import com.school.student_ms.model.Student;
 
 import java.util.List;
 

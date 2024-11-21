@@ -1,8 +1,10 @@
-package com.student_ms.student_ms.controller;
+package com.school.student_ms.controller;
 
-import com.student_ms.student_ms.model.Student;
-import com.student_ms.student_ms.service.StudentService;
+import com.school.student_ms.config.StudentConfig;
+import com.school.student_ms.model.Student;
+import com.school.student_ms.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,23 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
+
+
+    @Value("${school.urls.teacher}")
+    String teacherUrl;
+
+    @Autowired
+    StudentConfig studentConfig;
+
+    @GetMapping("/myconfig2")
+    public Object getStudentConfig() {
+        return studentConfig.getTeacher();
+    }
+
+    @GetMapping("/myconfig")
+    public String getConfig() {
+        return teacherUrl;
+    }
 
     @GetMapping("/hello")
     public String greet() {

@@ -8,11 +8,12 @@
 		<version>3.3.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.student_ms</groupId>
+
+	<groupId>com.school</groupId>
 	<artifactId>student_ms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>student_ms</name>
-	<description>A Student Management System Microservice</description>
+	<description>A Student Management System Microservice Application</description>
 	<url/>
 	<licenses>
 		<license/>
