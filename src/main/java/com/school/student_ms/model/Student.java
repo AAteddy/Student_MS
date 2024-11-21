@@ -1,4 +1,4 @@
-package com.student_ms.student_ms.model;
+package com.school.student_ms.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,8 +1,11 @@
 
 
+school:
+  urls:
+    teacher: localhost:3333/api/v1/school/teacher
+    management: localhost:4444/api/v1/school/management
+
 spring:
-  profiles:
-    active: dev
   application:
     name: student_ms
   datasource:
@@ -12,5 +15,5 @@ spring:
     password: root
   jpa:
     hibernate.ddl-auto: update
-#    generate-ddl: true
+    #    generate-ddl: true
     show-sql: true
