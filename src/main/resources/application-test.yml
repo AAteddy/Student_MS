@@ -1,0 +1,19 @@
+
+
+school:
+  urls:
+    teacher: localhost:3333/api/v1/school/teacher
+    management: localhost:4444/api/v1/school/management
+
+spring:
+  application:
+    name: student_ms
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/student
+    username: root
+    password: root
+  jpa:
+    hibernate.ddl-auto: update
+    #    generate-ddl: true
+    show-sql: true
