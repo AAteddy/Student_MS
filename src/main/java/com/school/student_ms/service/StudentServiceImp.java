@@ -1,9 +1,9 @@
 
 
-package com.student_ms.student_ms.service;
+package com.school.student_ms.service;
 
-import com.student_ms.student_ms.model.Student;
-import com.student_ms.student_ms.repository.StudentRepo;
+import com.school.student_ms.model.Student;
+import com.school.student_ms.repository.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
