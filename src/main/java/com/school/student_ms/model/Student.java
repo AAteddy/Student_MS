@@ -1,5 +1,6 @@
 package com.school.student_ms.model;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,5 +18,4 @@ public class Student {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;
-
 }
