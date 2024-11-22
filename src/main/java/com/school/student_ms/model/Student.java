@@ -1,8 +1,7 @@
 package com.school.student_ms.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -17,4 +16,6 @@ public class Student {
 
     private String gender;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Address address;
 }
