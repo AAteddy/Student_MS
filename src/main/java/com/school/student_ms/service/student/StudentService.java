@@ -1,4 +1,4 @@
-package com.school.student_ms.service;
+package com.school.student_ms.service.student;
 
 import com.school.student_ms.model.Student;
 

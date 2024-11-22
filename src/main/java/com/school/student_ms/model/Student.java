@@ -18,4 +18,7 @@ public class Student {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;
+
+    @ManyToOne
+    private Department department;
 }
