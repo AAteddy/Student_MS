@@ -1,6 +1,8 @@
 package com.school.student_ms.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -8,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Student {
 
     @Id
@@ -24,7 +27,7 @@ public class Student {
     @ManyToOne
     private Department department;
 
-    @ManyToMany
+    @ManyToMany( fetch = FetchType.LAZY )
     @JoinTable(
             name = "student_course",
             joinColumns = @JoinColumn(name = "student_id"),
