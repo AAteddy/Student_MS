@@ -2,7 +2,7 @@ package com.school.student_ms.controller;
 
 import com.school.student_ms.config.StudentConfig;
 import com.school.student_ms.model.Student;
-import com.school.student_ms.service.StudentService;
+import com.school.student_ms.service.student.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/student")
+@RequestMapping("/api/v1/school/student")
 public class StudentController {
 
     @Autowired
