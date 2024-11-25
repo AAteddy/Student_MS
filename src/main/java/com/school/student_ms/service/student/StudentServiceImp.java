@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,6 +29,9 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public Student save(Student student) {
+        //validate name
+        if(student.getName() == null)
+            throw new RuntimeException("Name must not be null.");
         return studentRepo.save(student);
     }
 
@@ -78,20 +82,22 @@ public class StudentServiceImp implements StudentService {
 
 
     @Override
-    public void addCourse(AddCourseDTO addCourseDTO) {
+    public void addCourse(AddCourseDTO addCourseDTO) throws Exception {
         //fetch student
-        Optional<Student> stdOpt = studentRepo.findById(addCourseDTO.getStudentId());
-        if(stdOpt.isPresent()) {
+//        Optional<Student> stdOpt = studentRepo.findById(addCourseDTO.getStudentId());
+        Student std = studentRepo.findById(addCourseDTO.getStudentId())
+                .orElseThrow();
+//        if(stdOpt.isPresent()) {
             //fetch courses
             List<Course> courseList = courseRepo.findAllById(addCourseDTO.getCourseIds());
             //convert (courseList) to set
-            Set<Course> courseSet = courseList.stream().collect(Collectors.toSet());
+            Set<Course> courseSet = new HashSet<>(courseList);
 
             //set to a student
-            Student std = stdOpt.get();
+//            Student std = stdOpt.get();
             std.setCourse(courseSet);
             studentRepo.save(std);
-        }
+//        }
 
     }
 

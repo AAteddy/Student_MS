@@ -17,7 +17,8 @@ public interface StudentService {
 
     void removeById(long id);
 
-    Student updateById(long id, Student student);
+    void addCourse(AddCourseDTO addCourseDTO) throws Exception;
 
-    void addCourse(AddCourseDTO addCourseDTO);
+    Student updateById(long id, Student student) ;
+
 }
