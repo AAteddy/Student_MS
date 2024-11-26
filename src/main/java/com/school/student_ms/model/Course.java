@@ -3,6 +3,7 @@ package com.school.student_ms.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.Set;
@@ -16,8 +17,10 @@ public class Course {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull(message = "Course Name must not be empty.")
     private String name;
 
+    @NotNull(message = "Course Code must not be empty.")
     private String code;
 
     @ManyToMany( fetch = FetchType.LAZY )

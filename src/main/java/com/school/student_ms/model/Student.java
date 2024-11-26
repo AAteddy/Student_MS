@@ -3,7 +3,9 @@ package com.school.student_ms.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.school.student_ms.model.enums.Gender;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.Set;
@@ -17,9 +19,12 @@ public class Student {
     @GeneratedValue
     private long id;
 
+    @NotNull(message = "Student Name cannot be empty.")
     private String name;
 
-    private String gender;
+    @NotNull(message = "Gender cannot be empty.")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;

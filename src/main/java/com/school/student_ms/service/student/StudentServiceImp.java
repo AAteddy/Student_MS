@@ -32,8 +32,8 @@ public class StudentServiceImp implements StudentService {
     @Override
     public Student save(Student student) {
         //validate name
-        if(student.getName() == null || student.getGender() == null)
-            throw new ValidationException("Student Name or Gender must not be empty.", ErrorCode.STUDENT_ERROR);
+//        if(student.getName() == null || student.getGender() == null)
+//            throw new ValidationException("Student Name or Gender must not be empty.", ErrorCode.STUDENT_ERROR);
 
         return studentRepo.save(student);
     }
@@ -89,10 +89,15 @@ public class StudentServiceImp implements StudentService {
         //fetch student
 //        Optional<Student> stdOpt = studentRepo.findById(addCourseDTO.getStudentId());
         Student std = studentRepo.findById(addCourseDTO.getStudentId())
-                .orElseThrow();
+                .orElseThrow(() -> {
+                    throw new ValidationException("Student with Id = " + addCourseDTO.getStudentId() + " could not be found", ErrorCode.STUDENT_ERROR);
+                });
 //        if(stdOpt.isPresent()) {
             //fetch courses
             List<Course> courseList = courseRepo.findAllById(addCourseDTO.getCourseIds());
+            if(courseList.isEmpty())
+                throw new ValidationException("Course with Id = " + addCourseDTO.getCourseIds() + " could not be found", ErrorCode.COURSE_ERROR);
+
             //convert (courseList) to set
             Set<Course> courseSet = new HashSet<>(courseList);
 

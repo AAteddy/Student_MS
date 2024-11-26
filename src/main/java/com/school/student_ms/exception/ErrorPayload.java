@@ -14,5 +14,6 @@ public class ErrorPayload {
     public ErrorPayload(ErrorCode errorCode, String errorDetail) {
         this.errorCode = errorCode;
         this.detail = errorDetail;
+        time = LocalDateTime.now();
     }
 }
