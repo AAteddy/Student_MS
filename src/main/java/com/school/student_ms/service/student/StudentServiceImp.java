@@ -3,6 +3,8 @@
 package com.school.student_ms.service.student;
 
 import com.school.student_ms.dto.AddCourseDTO;
+import com.school.student_ms.exception.ErrorCode;
+import com.school.student_ms.exception.ValidationException;
 import com.school.student_ms.model.Course;
 import com.school.student_ms.model.Student;
 import com.school.student_ms.repository.CourseRepo;
@@ -30,8 +32,9 @@ public class StudentServiceImp implements StudentService {
     @Override
     public Student save(Student student) {
         //validate name
-        if(student.getName() == null)
-            throw new RuntimeException("Name must not be null.");
+        if(student.getName() == null || student.getGender() == null)
+            throw new ValidationException("Student Name or Gender must not be empty.", ErrorCode.STUDENT_ERROR);
+
         return studentRepo.save(student);
     }
 
