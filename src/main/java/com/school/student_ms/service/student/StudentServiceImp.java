@@ -3,6 +3,8 @@
 package com.school.student_ms.service.student;
 
 import com.school.student_ms.dto.AddCourseDTO;
+import com.school.student_ms.exception.ErrorCode;
+import com.school.student_ms.exception.ValidationException;
 import com.school.student_ms.model.Course;
 import com.school.student_ms.model.Student;
 import com.school.student_ms.repository.CourseRepo;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,6 +31,10 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public Student save(Student student) {
+        //validate name
+//        if(student.getName() == null || student.getGender() == null)
+//            throw new ValidationException("Student Name or Gender must not be empty.", ErrorCode.STUDENT_ERROR);
+
         return studentRepo.save(student);
     }
 
@@ -78,20 +85,27 @@ public class StudentServiceImp implements StudentService {
 
 
     @Override
-    public void addCourse(AddCourseDTO addCourseDTO) {
+    public void addCourse(AddCourseDTO addCourseDTO) throws Exception {
         //fetch student
-        Optional<Student> stdOpt = studentRepo.findById(addCourseDTO.getStudentId());
-        if(stdOpt.isPresent()) {
+//        Optional<Student> stdOpt = studentRepo.findById(addCourseDTO.getStudentId());
+        Student std = studentRepo.findById(addCourseDTO.getStudentId())
+                .orElseThrow(() -> {
+                    throw new ValidationException("Student with Id = " + addCourseDTO.getStudentId() + " could not be found", ErrorCode.STUDENT_ERROR);
+                });
+//        if(stdOpt.isPresent()) {
             //fetch courses
             List<Course> courseList = courseRepo.findAllById(addCourseDTO.getCourseIds());
+            if(courseList.isEmpty())
+                throw new ValidationException("Course with Id = " + addCourseDTO.getCourseIds() + " could not be found", ErrorCode.COURSE_ERROR);
+
             //convert (courseList) to set
-            Set<Course> courseSet = courseList.stream().collect(Collectors.toSet());
+            Set<Course> courseSet = new HashSet<>(courseList);
 
             //set to a student
-            Student std = stdOpt.get();
+//            Student std = stdOpt.get();
             std.setCourse(courseSet);
             studentRepo.save(std);
-        }
+//        }
 
     }
 

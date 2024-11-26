@@ -7,6 +7,8 @@ import com.school.student_ms.service.student.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,8 +45,8 @@ public class StudentController {
     }
 
     @PostMapping("/register")
-    public Student create(@RequestBody Student student) {
-        return studentService.save(student);
+    public ResponseEntity<?> create(@RequestBody Student student) {
+        return ResponseEntity.ok(studentService.save(student));
     }
 
     //get all students
@@ -55,8 +57,8 @@ public class StudentController {
 
     //get a student by Id
     @GetMapping("/{id}")
-    public Student getById(@PathVariable long id) {
-        return studentService.getById(id);
+    public ResponseEntity<Student> getById(@PathVariable long id) {
+        return ResponseEntity.ok(studentService.getById(id));
     }
 
     //delete a student by Id
@@ -82,9 +84,13 @@ public class StudentController {
 
     //patch a student with a list of courses
     @PatchMapping("/add-course")
-    public ResponseEntity<?> addCourseToStudent(@RequestBody AddCourseDTO addCourseDTO) {
+    public ResponseEntity<?> addCourseToStudent(@RequestBody AddCourseDTO addCourseDTO) throws Exception{
         studentService.addCourse(addCourseDTO);
         return ResponseEntity.noContent().build();
     }
+
+
+    //exception handler
+
 
 }
