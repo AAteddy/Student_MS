@@ -1,3 +1,4 @@
+
 package com.school.student_ms.exception;
 
 import lombok.Getter;

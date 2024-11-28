@@ -1,3 +1,4 @@
+
 package com.school.student_ms.exception;
 
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalHandler {
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<?> handleRuntimeValidationException(ValidationException ex) {
+    public ResponseEntity<?> handleValidationException(ValidationException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getErrorPayload());
     }
 

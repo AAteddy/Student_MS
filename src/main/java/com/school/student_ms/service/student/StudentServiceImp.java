@@ -77,15 +77,16 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public Student getById(long id) {
-        return studentRepo.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Student not found with ID: " + id)
-                );
+        Student student = studentRepo.findById(id).orElseThrow(() -> {
+            throw new ValidationException("Student with Id = " + id + " could not be found", ErrorCode.STUDENT_ERROR);
+        });
+
+        return student;
     }
 
 
     @Override
-    public void addCourse(AddCourseDTO addCourseDTO) throws Exception {
+    public void addCourse(AddCourseDTO addCourseDTO) {
         //fetch student
 //        Optional<Student> stdOpt = studentRepo.findById(addCourseDTO.getStudentId());
         Student std = studentRepo.findById(addCourseDTO.getStudentId())
