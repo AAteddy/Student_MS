@@ -10,8 +10,11 @@ import com.school.student_ms.model.Student;
 import com.school.student_ms.repository.DepartmentRepo;
 import com.school.student_ms.repository.StudentRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.net.http.HttpClient;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +30,7 @@ public class DepartmentServiceImp implements DepartmentService {
     public Department save(Department department) {
         //validation
         if(department.getName() == null || department.getCode() == null)
-            throw new ValidationException("Department Name or Code must not be empty.", ErrorCode.DEPARTMENT_ERROR);
+            throw new ValidationException("Department Name or Code must not be empty.");
 
         return departmentRepo.save(department);
     }
@@ -41,17 +44,46 @@ public class DepartmentServiceImp implements DepartmentService {
     public void addStudent(AddStudentDTO addStudentDTO) {
         Department department = departmentRepo.findById(addStudentDTO.getDepartmentId())
                 .orElseThrow(() -> {
-                    throw new ValidationException("Department with Id = " + addStudentDTO.getDepartmentId() + " could not be found", ErrorCode.DEPARTMENT_ERROR);
+                    throw new ValidationException("Department with Id = " + addStudentDTO.getDepartmentId() + " could not be found");
                 });
 
         List<Student> stdList = studentRepo.findAllById(addStudentDTO.getStudentIds());
         if(stdList.isEmpty())
-            throw new ValidationException("Student with Id = " + addStudentDTO.getStudentIds() + " could not be found", ErrorCode.STUDENT_ERROR);
+            throw new ValidationException("Student with Id = " + addStudentDTO.getStudentIds() + " could not be found");
 
         Set<Student> stdSet = new HashSet<>(stdList);
 
         department.setStudents(stdSet);
         departmentRepo.save(department);
+    }
+
+    @Override
+    public Department getById(long id) {
+        return departmentRepo.findById(id)
+                .orElseThrow(() -> new ValidationException(
+                        "Department with Id = " + id + " not found"));
+    }
+
+    @Override
+    public void removeById(long id) {
+        Department department = departmentRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "Department with Id = " + id + " not found"));
+
+        departmentRepo.delete(department);
+    }
+
+    @Override
+    public Department updateById(long id, Department department) {
+        Department existingDepartment = departmentRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "Department with Id = " + id + " not found"
+                ));
+
+        existingDepartment.setName(department.getName());
+        existingDepartment.setCode(department.getCode());
+
+        return departmentRepo.save(existingDepartment);
     }
 
 }

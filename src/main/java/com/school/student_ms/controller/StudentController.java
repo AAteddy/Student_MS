@@ -1,3 +1,4 @@
+
 package com.school.student_ms.controller;
 
 import com.school.student_ms.config.StudentConfig;
@@ -45,8 +46,8 @@ public class StudentController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> create(@RequestBody Student student) {
-        return ResponseEntity.ok(studentService.save(student));
+    public ResponseEntity<Student> create(@RequestBody Student student) {
+        return new ResponseEntity<>(studentService.save(student), HttpStatus.CREATED);
     }
 
     //get all students
@@ -77,8 +78,8 @@ public class StudentController {
 
     //get student by name
     @GetMapping("/name/{name}")
-    public Student getByName(@PathVariable String name) {
-        return studentService.getByName(name);
+    public ResponseEntity<Student> getByName(@PathVariable String name) {
+        return ResponseEntity.ok(studentService.getByName(name));
     }
 
 

@@ -1,3 +1,4 @@
+
 package com.school.student_ms.exception;
 
 public enum ErrorCode {
