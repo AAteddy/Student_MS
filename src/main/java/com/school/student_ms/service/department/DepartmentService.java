@@ -13,4 +13,10 @@ public interface DepartmentService {
     List<Department> getAll();
 
     void addStudent(AddStudentDTO addStudentDTO);
+
+    Department getById(long id);
+
+    void removeById(long id);
+
+    Department updateById(long id, Department department);
 }

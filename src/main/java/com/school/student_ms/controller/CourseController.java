@@ -4,6 +4,8 @@ package com.school.student_ms.controller;
 import com.school.student_ms.model.Course;
 import com.school.student_ms.service.course.CourseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +20,7 @@ public class CourseController {
 
     @PostMapping("/add")
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
-        return ResponseEntity.ok(courseService.save(course));
+        return new ResponseEntity<>(courseService.save(course), HttpStatus.CREATED);
     }
 
     @GetMapping("/")

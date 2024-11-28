@@ -35,9 +35,9 @@ public class CourseServiceImp implements CourseService {
 
     @Override
     public Course getById(long id) {
-        return courseRepo.findById(id).orElseThrow(() -> {
-            throw new ValidationException("Course with the Id = " + id + " not found");
-        });
+        return courseRepo.findById(id)
+                .orElseThrow(() -> new ValidationException(
+                        "Course with the Id = " + id + " not found"));
 
     }
 

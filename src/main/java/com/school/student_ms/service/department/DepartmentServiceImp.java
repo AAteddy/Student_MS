@@ -10,8 +10,11 @@ import com.school.student_ms.model.Student;
 import com.school.student_ms.repository.DepartmentRepo;
 import com.school.student_ms.repository.StudentRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.net.http.HttpClient;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +55,35 @@ public class DepartmentServiceImp implements DepartmentService {
 
         department.setStudents(stdSet);
         departmentRepo.save(department);
+    }
+
+    @Override
+    public Department getById(long id) {
+        return departmentRepo.findById(id)
+                .orElseThrow(() -> new ValidationException(
+                        "Department with Id = " + id + " not found"));
+    }
+
+    @Override
+    public void removeById(long id) {
+        Department department = departmentRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "Department with Id = " + id + " not found"));
+
+        departmentRepo.delete(department);
+    }
+
+    @Override
+    public Department updateById(long id, Department department) {
+        Department existingDepartment = departmentRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST, "Department with Id = " + id + " not found"
+                ));
+
+        existingDepartment.setName(department.getName());
+        existingDepartment.setCode(department.getCode());
+
+        return departmentRepo.save(existingDepartment);
     }
 
 }
