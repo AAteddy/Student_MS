@@ -33,5 +33,33 @@ public class CourseServiceImp implements CourseService {
         return courseRepo.findAll();
     }
 
+    @Override
+    public Course getById(long id) {
+        return courseRepo.findById(id).orElseThrow(() -> {
+            throw new ValidationException("Course with the Id = " + id + " not found");
+        });
 
+    }
+
+    @Override
+    public void removeById(long id) {
+        Course course = courseRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,"Course with the Id = " + id + " not found"));
+
+        courseRepo.delete(course);
+    }
+
+    @Override
+    public Course updateById(long id, Course course) {
+        Course oldCourse = courseRepo.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Course with the Id = " + id + " not found"
+                ));
+
+        oldCourse.setName(course.getName());
+        oldCourse.setCode(course.getCode());
+
+        return courseRepo.save(oldCourse);
+    }
 }
