@@ -26,4 +26,20 @@ public class CourseController {
         return ResponseEntity.ok(courseService.getAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> getById(@PathVariable long id) {
+        return ResponseEntity.ok(courseService.getById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> removeById(@PathVariable long id) {
+        courseService.removeById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Course> updateById(@PathVariable long id, @RequestBody Course course) {
+        Course updatedCourse = courseService.updateById(id, course);
+        return ResponseEntity.ok(updatedCourse);
+    }
 }

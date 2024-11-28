@@ -4,6 +4,7 @@ package com.school.student_ms.service.student;
 
 import com.school.student_ms.dto.AddCourseDTO;
 import com.school.student_ms.exception.ErrorCode;
+import com.school.student_ms.exception.ItemNotFoundException;
 import com.school.student_ms.exception.ValidationException;
 import com.school.student_ms.model.Course;
 import com.school.student_ms.model.Student;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +33,9 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public Student save(Student student) {
-        //validate name
-//        if(student.getName() == null || student.getGender() == null)
-//            throw new ValidationException("Student Name or Gender must not be empty.", ErrorCode.STUDENT_ERROR);
+//        validate name
+        if(student.getName() == null || student.getGender() == null)
+            throw new ValidationException("Student Name or Gender must not be empty.");
 
         return studentRepo.save(student);
     }
@@ -77,27 +79,27 @@ public class StudentServiceImp implements StudentService {
 
     @Override
     public Student getById(long id) {
-        Student student = studentRepo.findById(id).orElseThrow(() -> {
-            throw new ValidationException("Student with Id = " + id + " could not be found", ErrorCode.STUDENT_ERROR);
-        });
 
-        return student;
+        return studentRepo.findById(id).orElseThrow(() -> {
+            throw new ValidationException
+                    ("Student with Id = " + id + " could not be found");
+        });
     }
 
 
     @Override
-    public void addCourse(AddCourseDTO addCourseDTO) {
+    public void addCourse(AddCourseDTO addCourseDTO) throws Exception {
         //fetch student
 //        Optional<Student> stdOpt = studentRepo.findById(addCourseDTO.getStudentId());
         Student std = studentRepo.findById(addCourseDTO.getStudentId())
                 .orElseThrow(() -> {
-                    throw new ValidationException("Student with Id = " + addCourseDTO.getStudentId() + " could not be found", ErrorCode.STUDENT_ERROR);
+                    throw new ItemNotFoundException("Student with Id = " + addCourseDTO.getStudentId() + " could not be found");
                 });
 //        if(stdOpt.isPresent()) {
             //fetch courses
             List<Course> courseList = courseRepo.findAllById(addCourseDTO.getCourseIds());
             if(courseList.isEmpty())
-                throw new ValidationException("Course with Id = " + addCourseDTO.getCourseIds() + " could not be found", ErrorCode.COURSE_ERROR);
+                throw new ItemNotFoundException("Course with Id = " + addCourseDTO.getCourseIds() + " could not be found");
 
             //convert (courseList) to set
             Set<Course> courseSet = new HashSet<>(courseList);

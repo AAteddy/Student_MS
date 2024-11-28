@@ -6,7 +6,10 @@ import com.school.student_ms.exception.ValidationException;
 import com.school.student_ms.model.Course;
 import com.school.student_ms.repository.CourseRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -20,7 +23,7 @@ public class CourseServiceImp implements CourseService {
     public Course save(Course course) {
         //validation
         if(course.getName() == null || course.getCode() == null)
-            throw new ValidationException("Course Name and Code must be empty.", ErrorCode.COURSE_ERROR);
+            throw new ValidationException("Course Name and Code must be empty.");
 
         return courseRepo.save(course);
     }
@@ -29,4 +32,6 @@ public class CourseServiceImp implements CourseService {
     public List<Course> getAll() {
         return courseRepo.findAll();
     }
+
+
 }

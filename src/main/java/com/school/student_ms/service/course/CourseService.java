@@ -9,4 +9,10 @@ public interface CourseService {
     Course save(Course course);
 
     List<Course> getAll();
+
+    Course getById(long id);
+
+    void removeById(long id);
+
+    Course updateById(long id, Course course);
 }

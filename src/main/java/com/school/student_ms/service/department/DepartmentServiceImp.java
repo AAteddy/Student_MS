@@ -27,7 +27,7 @@ public class DepartmentServiceImp implements DepartmentService {
     public Department save(Department department) {
         //validation
         if(department.getName() == null || department.getCode() == null)
-            throw new ValidationException("Department Name or Code must not be empty.", ErrorCode.DEPARTMENT_ERROR);
+            throw new ValidationException("Department Name or Code must not be empty.");
 
         return departmentRepo.save(department);
     }
@@ -41,12 +41,12 @@ public class DepartmentServiceImp implements DepartmentService {
     public void addStudent(AddStudentDTO addStudentDTO) {
         Department department = departmentRepo.findById(addStudentDTO.getDepartmentId())
                 .orElseThrow(() -> {
-                    throw new ValidationException("Department with Id = " + addStudentDTO.getDepartmentId() + " could not be found", ErrorCode.DEPARTMENT_ERROR);
+                    throw new ValidationException("Department with Id = " + addStudentDTO.getDepartmentId() + " could not be found");
                 });
 
         List<Student> stdList = studentRepo.findAllById(addStudentDTO.getStudentIds());
         if(stdList.isEmpty())
-            throw new ValidationException("Student with Id = " + addStudentDTO.getStudentIds() + " could not be found", ErrorCode.STUDENT_ERROR);
+            throw new ValidationException("Student with Id = " + addStudentDTO.getStudentIds() + " could not be found");
 
         Set<Student> stdSet = new HashSet<>(stdList);
 
