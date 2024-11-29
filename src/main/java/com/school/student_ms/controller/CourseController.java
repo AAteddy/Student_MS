@@ -25,12 +25,13 @@ public class CourseController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
+
         return ResponseEntity.ok(courseService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getById(@PathVariable long id) {
+    public ResponseEntity<CourseDTO> getById(@PathVariable long id) {
         return ResponseEntity.ok(courseService.getById(id));
     }
 

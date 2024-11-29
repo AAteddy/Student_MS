@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,15 +36,34 @@ public class CourseServiceImp implements CourseService {
     }
 
     @Override
-    public List<Course> getAll() {
-        return courseRepo.findAll();
+    public List<CourseDTO> getAll() {
+        List<CourseDTO> courseDTOList = new ArrayList<>();
+        List<Course> courseList = courseRepo.findAll();
+
+        if(!courseList.isEmpty()) {
+            for (int i = 0; i <= courseList.size() - 1; i++) {
+                long teacherId = courseList.get(i).getTeacherId();
+                if(teacherId != 0) {
+                    Teacher teacher = teacherService.getTeacherById(teacherId);
+                    CourseDTO courseDTO = getCourseDTO(courseList.get(i), teacher);
+                    courseDTOList.add(courseDTO);
+                }
+            }
+        }
+
+        return courseDTOList;
     }
 
     @Override
-    public Course getById(long id) {
-        return courseRepo.findById(id)
+    public CourseDTO getById(long id) {
+        Course course = courseRepo.findById(id)
                 .orElseThrow(() -> new ValidationException(
                         "Course with the Id = " + id + " not found"));
+
+        Teacher teacher = teacherService.getTeacherById(course.getTeacherId());
+        CourseDTO courseDTO = getCourseDTO(course, teacher);
+
+        return courseDTO;
 
     }
 
@@ -78,7 +98,6 @@ public class CourseServiceImp implements CourseService {
                 ));
 
         //fetch teacher
-        RestTemplate restTemplate = new RestTemplate();
         Teacher teacher = teacherService.getTeacherById(teacherId);
 
         //save to course

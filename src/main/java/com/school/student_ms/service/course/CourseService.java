@@ -9,9 +9,9 @@ public interface CourseService {
 
     Course save(Course course);
 
-    List<Course> getAll();
+    List<CourseDTO> getAll();
 
-    Course getById(long id);
+    CourseDTO getById(long id);
 
     void removeById(long id);
 
