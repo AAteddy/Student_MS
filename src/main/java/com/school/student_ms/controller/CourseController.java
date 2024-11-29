@@ -1,6 +1,7 @@
 package com.school.student_ms.controller;
 
 
+import com.school.student_ms.dto.CourseDTO;
 import com.school.student_ms.model.Course;
 import com.school.student_ms.service.course.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +25,13 @@ public class CourseController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Course>> getAllCourses() {
+    public ResponseEntity<List<CourseDTO>> getAllCourses() {
+
         return ResponseEntity.ok(courseService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Course> getById(@PathVariable long id) {
+    public ResponseEntity<CourseDTO> getById(@PathVariable long id) {
         return ResponseEntity.ok(courseService.getById(id));
     }
 
@@ -43,5 +45,10 @@ public class CourseController {
     public ResponseEntity<Course> updateById(@PathVariable long id, @RequestBody Course course) {
         Course updatedCourse = courseService.updateById(id, course);
         return ResponseEntity.ok(updatedCourse);
+    }
+
+    @PutMapping("/{courseId}/teacher/{teacherId}")
+    public ResponseEntity<CourseDTO> addTeacher(@PathVariable long courseId, @PathVariable long teacherId) {
+        return ResponseEntity.ok(courseService.addTeacher(courseId, teacherId));
     }
 }
