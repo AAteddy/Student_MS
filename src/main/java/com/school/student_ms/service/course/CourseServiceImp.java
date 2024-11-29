@@ -2,6 +2,7 @@ package com.school.student_ms.service.course;
 
 
 import com.school.student_ms.client.model.Teacher;
+import com.school.student_ms.client.model.TeacherService;
 import com.school.student_ms.dto.CourseDTO;
 import com.school.student_ms.exception.ErrorCode;
 import com.school.student_ms.exception.ValidationException;
@@ -21,6 +22,8 @@ import java.util.List;
 public class CourseServiceImp implements CourseService {
 
     private final CourseRepo courseRepo;
+    private final TeacherService teacherService;
+
 
     @Override
     public Course save(Course course) {
@@ -76,20 +79,24 @@ public class CourseServiceImp implements CourseService {
 
         //fetch teacher
         RestTemplate restTemplate = new RestTemplate();
-        Teacher teacher = restTemplate.getForObject("http://localhost:9999/api/v1/school/teacher/" + teacherId, Teacher.class);
+        Teacher teacher = teacherService.getTeacherById(teacherId);
 
         //save to course
         course.setTeacherId(teacher.getId());
         courseRepo.save(course);
 
+        CourseDTO courseDTO = getCourseDTO(course, teacher);
+
+        return courseDTO;
+    }
+
+    private CourseDTO getCourseDTO(Course course, Teacher teacher) {
         CourseDTO courseDTO = new CourseDTO();
         courseDTO.setId(course.getId());
         courseDTO.setName(course.getName());
         courseDTO.setCode(course.getCode());
         courseDTO.setStudents(course.getStudents());
         courseDTO.setTeacher(teacher);
-
-
         return courseDTO;
     }
 }
