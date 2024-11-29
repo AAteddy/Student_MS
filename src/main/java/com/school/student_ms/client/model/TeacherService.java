@@ -1,14 +1,16 @@
 package com.school.student_ms.client.model;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
 @Service
+@RequiredArgsConstructor
 public class TeacherService {
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
     public Teacher getTeacherById(long id) {
 
