@@ -1,6 +1,8 @@
 package com.school.student_ms.service.course;
 
 
+import com.school.student_ms.client.model.Teacher;
+import com.school.student_ms.dto.CourseDTO;
 import com.school.student_ms.exception.ErrorCode;
 import com.school.student_ms.exception.ValidationException;
 import com.school.student_ms.model.Course;
@@ -9,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -61,5 +64,26 @@ public class CourseServiceImp implements CourseService {
         oldCourse.setCode(course.getCode());
 
         return courseRepo.save(oldCourse);
+    }
+
+    @Override
+    public CourseDTO addTeacher(long courseId, long teacherId) {
+        //fetch course
+        Course course = courseRepo.findById(courseId)
+                .orElseThrow(() -> new ValidationException(
+                        "Course with Id = " + courseId + " not found"
+                ));
+
+        //fetch teacher
+        RestTemplate restTemplate = new RestTemplate();
+        Teacher teacher = restTemplate.getForObject("http://localhost:9999/api/v1/school/teacher/" + teacherId, Teacher.class);
+
+        //save to course
+        course.setTeacherId(teacher.getId());
+        courseRepo.save(course);
+
+        CourseDTO courseDTO = new CourseDTO();
+
+        return courseDTO;
     }
 }
