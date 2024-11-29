@@ -83,6 +83,12 @@ public class CourseServiceImp implements CourseService {
         courseRepo.save(course);
 
         CourseDTO courseDTO = new CourseDTO();
+        courseDTO.setId(course.getId());
+        courseDTO.setName(course.getName());
+        courseDTO.setCode(course.getCode());
+        courseDTO.setStudents(course.getStudents());
+        courseDTO.setTeacher(teacher);
+
 
         return courseDTO;
     }
