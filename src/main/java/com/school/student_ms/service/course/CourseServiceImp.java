@@ -1,6 +1,7 @@
 package com.school.student_ms.service.course;
 
 
+import com.school.student_ms.client.feign.TeacherFeign;
 import com.school.student_ms.client.model.Teacher;
 import com.school.student_ms.client.model.TeacherService;
 import com.school.student_ms.dto.CourseDTO;
@@ -23,7 +24,8 @@ import java.util.List;
 public class CourseServiceImp implements CourseService {
 
     private final CourseRepo courseRepo;
-    private final TeacherService teacherService;
+//    private final TeacherService teacherService;
+    private final TeacherFeign teacherFeign;
 
 
     @Override
@@ -44,7 +46,8 @@ public class CourseServiceImp implements CourseService {
             for (int i = 0; i <= courseList.size() - 1; i++) {
                 long teacherId = courseList.get(i).getTeacherId();
                 if(teacherId != 0) {
-                    Teacher teacher = teacherService.getTeacherById(teacherId);
+//                    Teacher teacher = teacherService.getTeacherById(teacherId);
+                    Teacher teacher = teacherFeign.getTeacherById(teacherId).getBody();
                     CourseDTO courseDTO = getCourseDTO(courseList.get(i), teacher);
                     courseDTOList.add(courseDTO);
                 }
@@ -60,7 +63,8 @@ public class CourseServiceImp implements CourseService {
                 .orElseThrow(() -> new ValidationException(
                         "Course with the Id = " + id + " not found"));
 
-        Teacher teacher = teacherService.getTeacherById(course.getTeacherId());
+//        Teacher teacher = teacherService.getTeacherById(course.getTeacherId());
+        Teacher teacher = teacherFeign.getTeacherById(course.getTeacherId()).getBody();
         CourseDTO courseDTO = getCourseDTO(course, teacher);
 
         return courseDTO;
@@ -98,7 +102,8 @@ public class CourseServiceImp implements CourseService {
                 ));
 
         //fetch teacher
-        Teacher teacher = teacherService.getTeacherById(teacherId);
+//        Teacher teacher = teacherService.getTeacherById(teacherId);
+        Teacher teacher = teacherFeign.getTeacherById(teacherId).getBody();
 
         //save to course
         course.setTeacherId(teacher.getId());

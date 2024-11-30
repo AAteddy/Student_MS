@@ -4,7 +4,7 @@ spring:
   profiles:
     active: dev
   application:
-    name: student_ms
+    name: student-ms
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/student
